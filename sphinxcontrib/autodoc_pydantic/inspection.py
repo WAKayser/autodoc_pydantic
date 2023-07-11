@@ -339,7 +339,7 @@ class ConfigInspector(BaseInspectionComposite):
 
         cfg = self.attribute
 
-        is_main_config = cfg is pydantic.main.BaseConfig
+        is_main_config = True
         is_setting_config = cfg is SettingsConfigDict
         is_default_config = is_main_config or is_setting_config
 
