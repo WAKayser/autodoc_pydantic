@@ -528,20 +528,20 @@ class ModelInspector:
 
         mapping = defaultdict(list)
 
-        # standard validators
-        for field, validators in self.model.__validators__.items():
-            for validator in validators:
-                mapping[field].append(ValidatorAdapter(func=validator.func))
+        # # standard validators
+        # for field, validators in self.model.__validators__.items():
+        #     for validator in validators:
+        #         mapping[field].append(ValidatorAdapter(func=validator.func))
 
-        # root pre
-        for func in self.model.__pre_root_validators__:
-            mapping["*"].append(ValidatorAdapter(func=func,
-                                                 root_pre=True))
+        # # root pre
+        # for func in self.model.__pre_root_validators__:
+        #     mapping["*"].append(ValidatorAdapter(func=func,
+        #                                          root_pre=True))
 
-        # root post
-        for _, func in self.model.__post_root_validators__:
-            mapping["*"].append(ValidatorAdapter(func=func,
-                                                 root_post=True))
+        # # root post
+        # for _, func in self.model.__post_root_validators__:
+        #     mapping["*"].append(ValidatorAdapter(func=func,
+        #                                          root_post=True))
 
         return mapping
 
