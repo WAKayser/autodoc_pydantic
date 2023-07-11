@@ -8,7 +8,7 @@ from typing import Any, Optional, Dict, List, Iterable, Callable, Set
 import sphinx
 from docutils.statemachine import StringList
 from pydantic_settings import BaseSettings
-from pydantic import BaseModel
+from pydantic import BaseModel, AliasChoices
 from sphinx.ext.autodoc import (
     MethodDocumenter,
     ClassDocumenter,
@@ -723,9 +723,20 @@ class PydanticFieldDocumenter(AttributeDocumenter):
         swap = self.pydantic.options.is_true("field-swap-name-and-alias")
         alias_required = show_alias or swap
 
-        if alias_given and alias_required:
-            sourcename = self.get_sourcename()
-            self.add_line('   :alias: ' + field.alias, sourcename)
+        if not alias_required:
+            return
+
+        if isinstance(field.validation_alias, str):
+            alias_str = field.validation_alias
+        elif isinstance(field.validation_alias, AliasChoices):
+            alias_str =  ', '.join(field.validation_alias.choices)
+        elif isinstance(field.alias, str) and field.alias != field_name:
+            alias_str = field.alias
+        else:
+            return
+        sourcename = self.get_sourcename()
+        self.add_line('   :alias: ' + alias_str, sourcename)
+
 
     def add_content(self,
                     more_content: Optional[StringList],
