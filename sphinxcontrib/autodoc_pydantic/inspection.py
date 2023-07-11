@@ -327,7 +327,7 @@ class ConfigInspector(BaseInspectionComposite):
 
     def __init__(self, parent: 'ModelInspector'):
         super().__init__(parent)
-        self.attribute: Dict = self.model.Config
+        self.attribute: Dict = self.model.model_config
 
     @property
     def is_configured(self) -> bool:
