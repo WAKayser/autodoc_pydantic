@@ -13,9 +13,9 @@ from typing import NamedTuple, List, Dict, Any, Set, TypeVar, Type, Callable, \
 
 import pydantic
 from pydantic import BaseModel, create_model
-from pydantic.class_validators import Validator
+# from pydantic.class_validators import Validator
 from pydantic.fields import FieldInfo
-from pydantic.schema import get_field_schema_validations
+# from pydantic.schema import get_field_schema_validations
 from pydantic_settings import SettingsConfigDict
 from sphinx.addnodes import desc_signature
 
@@ -172,7 +172,7 @@ class FieldInspector(BaseInspectionComposite):
         """
 
         field = self.get(field_name)
-        constraints = get_field_schema_validations(field)
+        # constraints = get_field_schema_validations(field)
         ignore = {"env_names", "env"}
 
         # ignore additional kwargs from pydantic `Field`, see #110
@@ -181,8 +181,10 @@ class FieldInspector(BaseInspectionComposite):
         if extra_kwargs:
             ignore = ignore.union(extra_kwargs.keys())
 
-        return {key: value for key, value in constraints.items()
-                if key not in ignore}
+        return {}
+
+        # return {key: value for key, value in constraints.items()
+        #         if key not in ignore}
 
     def is_required(self, field_name: str) -> bool:
         """Check if a given pydantic field is required/mandatory. Returns True,
@@ -263,7 +265,7 @@ class ValidatorInspector(BaseInspectionComposite):
 
     def __init__(self, parent: 'ModelInspector'):
         super().__init__(parent)
-        self.attribute: Dict[str, List[Validator]] = self.model.__validators__
+        self.attribute: Dict[str, Any] = self.model.__pydantic_validator__
 
     @property
     def values(self) -> Set[ValidatorAdapter]:
